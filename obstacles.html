@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Мелодия Obstacles</title>
+    <!-- Подключаем библиотеку Tone.js по ссылке -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  </head>
+  <body>
+    <button id="playBtn" style="padding: 20px; font-size: 16px">
+      Play Obstacles
+    </button>
+
+    <script>
+      // Находим кнопку и ждем клика по ней
+      document.getElementById('playBtn').addEventListener('click', async () => {
+        // Включаем звук в браузере (разрешаем ему звучать)
+        await Tone.start()
+
+        // Создаём синтезатор и подключаем к колонкам
+        const synth = new Tone.Synth().toDestination()
+
+        // Описываем секвенцию мелодии
+        const sequence = [
+          { time: 0.0, noteName: 'E4', duration: '8n', velocity: 1 },
+          { time: 0.5, noteName: 'E4', duration: '8n', velocity: 1 },
+          { time: 1.0, noteName: 'D4', duration: '8n', velocity: 1 },
+          { time: 1.5, noteName: 'C4', duration: '8n', velocity: 1 },
+          { time: 2.0, noteName: 'A3', duration: '4n', velocity: 1 },
+          { time: 3.0, noteName: 'A3', duration: '8n', velocity: 1 },
+          { time: 3.5, noteName: 'C4', duration: '8n', velocity: 1 },
+          { time: 4.0, noteName: 'D4', duration: '8n', velocity: 1 },
+          { time: 4.5, noteName: 'C4', duration: '2n', velocity: 1 }
+        ]
+
+        // Создаём партию и добавляем в неё секвенцию
+        const part = new Tone.Part((time, note) => {
+          synth.triggerAttackRelease(
+            note.noteName,
+            note.duration,
+            time,
+            note.velocity
+          )
+        }, sequence).start(0)
+
+        // Указываем длительность партии и включаем зацикливание
+        part.loopEnd = 6
+        part.loop = true
+
+        // Включаем отсчёт времени в Tone.js
+        Tone.Transport.start()
+      })
+    </script>
+  </body>
+</html>

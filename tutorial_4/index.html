@@ -6,64 +6,35 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Reunion Synth</title>
+    <title>LiS.sint</title>
     <link rel="stylesheet" href="stylesheets/style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Work+Sans:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="icon" href="images/icon.png">
     <script src="scripts/script.js" defer></script>
-
-    <!-- __________хэдер__________ -->
   </head>
+
   <body>
-    <h1>Reunion Synth</h1>
-    <p class="sub">собери свою мелодию — вечер, дождь, дорога</p>
+    <!-- _______________Название синтезатора_______________ -->
+   <section class="sintName">
+    <h1 class="lis">LIS SINTEZATOR</h1>
+    <p class="autumn">собери мелодию осени</p>
+   </section>
 
-    <div class="board">
-      <!-- Панель управления -->
-      <section class="card wide" id="panel">
-        <h2>Панель управления</h2>
-        <div class="panel-row">
-          <button class="btn go" id="play">▶ Играть</button>
-          <button class="btn" id="stop">■ Стоп</button>
-          <button class="btn" id="clear">Очистить</button>
-          <label class="select" style="grid-template-columns: auto auto"
-            >Пресет
-            <select id="preset"></select>
-          </label>
-        </div>
-        <div class="panel-row" id="panelSliders"></div>
-      </section>
-
-      <section class="card" id="osc"><h2>Осциллятор</h2></section>
-      <section class="card" id="filter"><h2>Фильтр</h2></section>
-      <section class="card" id="amp"><h2>Усилитель</h2></section>
-      <section class="card" id="fx"><h2>Эффекты</h2></section>
-
-      <section class="card">
-        <h2>Кнопки-звуки</h2>
-        <div class="pads" id="notePads"></div>
-        <div class="pads" id="drumPads"></div>
-        <p class="hint">
-          Клавиши: A S D F G H J K — ноты, Z X C V B N — ударные.
-        </p>
-      </section>
-
-      <section class="card">
-        <h2>Свои биты KR-55</h2>
-        <div id="files"></div>
-        <p class="hint">
-          Звуки ударных сделаны в браузере в духе KR-55. Если у тебя есть
-          настоящий KR-55 Sample Pack, загрузи файл на нужный барабан — он
-          заменит синтезированный.
-        </p>
-      </section>
-
-      <section class="card wide dark">
-        <h2>Секвенсор</h2>
-        <div class="seq-wrap" id="seq"></div>
-      </section>
+   <!-- _________________секции с голосами_________________ -->
+   <section class="voices">
+    <div class="glassCard_first" >
+      <div class="glassEf"></div>
     </div>
+    <div class="glassCard_second" >
+      <div class="glassEf"></div>
+    </div>
+   </section>
+
+   <section class="effects">
+    <img src="images/photoCard_one.png" alt="" class="photo_1">
+    <img src="images/photoCard_two.png" alt="" class="photo_2">
+    <img src="images/photoCard_one.png" alt="" class="photo_3">
+    <img src="images/photoCard_two.png" alt="" class="photo_4">
+   </section>
+
   </body>
 </html>

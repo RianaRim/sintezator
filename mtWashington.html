@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Мелодия Mt Washington</title>
+    <!-- Подключаем библиотеку Tone.js по ссылке -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  </head>
+  <body
+    style="
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+    "
+  >
+    <button
+      id="playBtn"
+      style="padding: 20px 40px; font-size: 18px; cursor: pointer"
+    >
+      Play Mt Washington
+    </button>
+
+    <script>
+      // Находим кнопку на странице и ждем клика по ней
+      document.getElementById('playBtn').addEventListener('click', async () => {
+        // Разрешаем звуковому контексту работать в браузере после клика
+        await Tone.start()
+
+        // Создаём базовый синтезатор и подключаем его к колонкам
+        const synth = new Tone.Synth().toDestination()
+
+        // Описываем секвенцию нот для мелодии "Mt Washington"
+        const sequence = [
+          { time: 0.0, noteName: 'E4', duration: '8n', velocity: 1 },
+          { time: 0.5, noteName: 'D4', duration: '8n', velocity: 1 },
+          { time: 1.0, noteName: 'C4', duration: '8n', velocity: 1 },
+          { time: 1.5, noteName: 'A3', duration: '8n', velocity: 1 },
+          { time: 2.0, noteName: 'C4', duration: '8n', velocity: 1 },
+          { time: 2.5, noteName: 'C4', duration: '4n', velocity: 1 },
+          { time: 3.5, noteName: 'A3', duration: '8n', velocity: 1 },
+          { time: 4.0, noteName: 'G3', duration: '2n', velocity: 1 }
+        ]
+
+        // Создаём партию: программа будет брать каждую ноту из массива и проигрывать её[cite: 3]
+        const part = new Tone.Part((time, note) => {
+          synth.triggerAttackRelease(
+            note.noteName,
+            note.duration,
+            time,
+            note.velocity
+          )
+        }, sequence).start(0)
+
+        // Задаем длину зацикленного отрезка (6 секунд) и включаем повторение[cite: 3]
+        part.loopEnd = 6
+        part.loop = true
+
+        // Включаем главный отсчёт времени в Tone.js, чтобы музыка заиграла[cite: 3]
+        Tone.Transport.start()
+
+        // Немного визуального фидбека для интерфейса
+        document.getElementById('playBtn').innerText =
+          'Playing... (Обнови страницу для остановки)'
+      })
+    </script>
+  </body>
+</html>

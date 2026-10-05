@@ -1,252 +1,101 @@
-/* ---------- Цвета: вечерний город + фотобумага ---------- */
 :root {
-  --night: #1c1833; /* фон страницы */
-  --ink: #14112a; /* тёмный текст и тёмные карточки */
-  --paper: #ece9f5; /* "фотобумага" карточек */
-  --teal: #35c4b5; /* мелодия */
-  --pink: #e85d9a; /* ударные и ползунки */
-  --butter: #f6d66b; /* вспышка при нажатии */
-  box-sizing: border-box;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --font: #fff;
+  --border: rgba(170, 170, 170, 0.5);
+  --cards: #241822;
 }
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
+* {
+  box-sizing: border-box;
 }
 html {
-  scroll-padding-top: env(safe-area-inset-top, 0px);
+  scroll-behavior: smooth;
 }
 body {
-  margin: 0;
-  background: var(--night);
-  color: var(--paper);
-  font-family: 'Work Sans', system-ui, sans-serif;
-  padding: 20px;
-}
-h1 {
-  font-family: Caveat, cursive;
-  font-size: 64px;
-  margin: 0;
-  line-height: 1;
-}
-.sub {
-  font-family: Caveat, cursive;
-  font-size: 24px;
-  color: var(--teal);
-  margin: 4px 0 24px;
-}
-
-/* ---------- Карточки-полароиды ---------- */
-.board {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 22px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.card {
-  background: var(--paper);
-  color: var(--ink);
-  padding: 16px 16px 30px;
-  border-radius: 3px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-}
-.card:nth-child(odd) {
-  transform: rotate(-0.5deg);
-}
-.card:nth-child(even) {
-  transform: rotate(0.5deg);
-}
-.card.wide {
-  grid-column: 1 / -1;
-  transform: none;
-}
-.card.dark {
-  background: var(--ink);
-  color: var(--paper);
-  border: 2px solid #2d2850;
-}
-h2 {
-  font-family: Caveat, cursive;
-  font-size: 30px;
-  margin: 0 0 10px;
-}
-
-/* ---------- Ползунки и выпадающие списки ---------- */
-.slider,
-.select {
-  display: grid;
-  grid-template-columns: 95px 1fr 56px;
-  align-items: center;
-  gap: 8px;
-  margin: 8px 0;
-  font-size: 14px;
-}
-.select {
-  grid-template-columns: 95px 1fr;
-}
-output {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  font-size: 13px;
-}
-select {
-  padding: 6px;
-  border-radius: 4px;
-  border: 2px solid var(--ink);
-  background: #fff;
-  font: inherit;
-}
-input[type='range'] {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--pink);
   width: 100%;
-}
-input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--teal);
-  border: 3px solid var(--ink);
-  cursor: pointer;
-}
-input[type='range']::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--teal);
-  border: 3px solid var(--ink);
-  cursor: pointer;
-}
-:focus-visible {
-  outline: 3px solid var(--butter);
-  outline-offset: 2px;
+  height: 45vw;
+  margin: 0 auto;
+  background-image: url('/tutorial_4/images/background\ img.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'OpenSans', 'BalsamiqSans', system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
-/* ---------- Кнопки ---------- */
-button {
-  font: inherit;
-  cursor: pointer;
-}
-.btn {
-  background: var(--ink);
-  color: var(--paper);
-  border: 0;
-  border-radius: 4px;
-  padding: 10px 18px;
-  font-weight: 600;
-}
-.btn.go {
-  background: var(--teal);
-  color: var(--ink);
-}
-.panel-row {
+.sintName {
   display: flex;
+  flex-direction: column;
+  padding-top: 4vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.lis {
+  font-family: 'BalsamiqSans';
+  font-size: 5vw;
+  color: var(--font);
+}
+
+.autumn {
+  font-family: 'OpenSans';
+  font-size: 1.5vw;
+  color: var(--font);
+}
+
+.voices {
+  height: 47%;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5vw;
+  padding-top: 1.5vw;
+  justify-content: center;
+}
+
+.glassCard_first {
+  width: 45vw;
+  height: 18vw;
+  display: flex;
+  padding-left: 3vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glassCard_second {
+  width: 45vw;
+  height: 18vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glassEf {
+  width: 45vw;
+  height: 18vw;
+  background: linear-gradient(
+    to right,
+    rgba(36, 24, 34, 0) 0%,
+    rgba(36, 24, 34, 1) 10%,
+    rgba(36, 24, 34, 1) 90%,
+    rgba(36, 24, 34, 0) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 2px solid;
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: rgba(170, 170, 170, 0);
+  border-right-color: rgba(170, 170, 170, 0);
+}
+
+.effects {
+  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-.panel-row .slider {
-  flex: 1 1 240px;
-}
-.pads {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.pad {
-  height: 62px;
-  border-radius: 6px;
-  border: 2px solid var(--teal);
-  background: var(--ink);
-  color: var(--paper);
-  font-size: 13px;
-}
-.pad.drum {
-  border-color: var(--pink);
-}
-.pad small {
-  display: block;
-  opacity: 0.6;
-}
-.pad.hit {
-  background: var(--butter);
-  color: var(--ink);
+  padding-left: 6vw;
+  gap: 1.7vw;
 }
 
-/* ---------- Секвенсор ---------- */
-.seq-wrap {
-  overflow-x: auto;
-  padding-bottom: 6px;
-}
-.seq-row {
-  display: grid;
-  grid-template-columns: 80px repeat(16, 28px);
-  gap: 4px;
-  margin: 4px 0;
-  align-items: center;
-  min-width: 580px;
-}
-.seq-row span {
-  font-size: 13px;
-}
-.cell {
-  height: 26px;
-  border-radius: 3px;
-  border: 0;
-  background: #2a2547;
-}
-.cell.beat {
-  background: #38325c;
-}
-.cell.on {
-  background: var(--teal);
-}
-.cell.drum.on {
-  background: var(--pink);
-}
-.dot {
-  height: 6px;
-  border-radius: 3px;
-  background: #2a2547;
-}
-.dot.now {
-  background: var(--butter);
-}
-
-/* ---------- Свои сэмплы ---------- */
-.file {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 10px;
-  margin: 6px 0;
-  border: 2px dashed var(--ink);
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-.file input {
-  display: none;
-}
-.file.loaded {
-  border-style: solid;
-  border-color: var(--teal);
-}
-.hint {
-  font-size: 13px;
-  opacity: 0.75;
-  margin: 8px 0 0;
-}
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-  }
+.photo_1,
+.photo_2,
+.photo_3,
+.photo_4 {
+  height: 23.4vw;
 }
