@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LIS SINTEZATOR</title>
+
+  <!-- Шрифты: Comfortaa для заголовков, Noto Sans для остального -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Библиотека Tone.js (звук) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <style>
+    /* ---------- Общие настройки ---------- */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #fff;
+      font-family: 'Noto Sans', sans-serif;
+      /* Положи скриншот осеннего леса рядом с файлом и назови bg.jpg.
+         Если картинки нет, будет градиент. */
+      background:
+        url('bg.jpg') center / cover fixed no-repeat,
+        linear-gradient(160deg, #7a2a12, #c4592a 45%, #e9a46a 75%, #4a2b1f);
+    }
+
+    /* ---------- Заголовок ---------- */
+    header { text-align: center; padding: 50px 20px 30px; }
+    h1 {
+      margin: 0;
+      font-family: 'Comfortaa', sans-serif;
+      font-weight: 700;
+      font-size: clamp(36px, 7vw, 96px);
+    }
+    .subtitle { margin: 6px 0 0; font-size: clamp(16px, 2vw, 26px); font-weight: 600; }
+
+    /* ---------- Сетка: два голоса рядом ---------- */
+    .voices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 0 50px 60px;
+    }
+
+    /* ---------- Тёмная панель (имя, кнопки, темп, громкость) ---------- */
+    .panel {
+      background: #231a24;
+      border: 1px solid rgba(255, 200, 150, 0.3);
+      padding: 22px 26px 30px;
+    }
+    h2 { margin: 0 0 16px; font-family: 'Comfortaa', sans-serif; font-weight: 500; font-size: 38px; }
+
+    .buttons { display: flex; gap: 14px; margin-bottom: 24px; }
+    button {
+      font: 600 18px 'Noto Sans', sans-serif;
+      color: #fff;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+    }
+    button.play-btn {
+      border-color: #e9a23b;
+      background: linear-gradient(90deg, #2a1a1a, #c2661a);
+    }
+    button.active { box-shadow: 0 0 14px #e9a23b; }   /* подсветка, пока голос играет */
+
+    /* Строка с ползунком: подпись | ползунок | значение */
+    .row { display: grid; grid-template-columns: 110px 1fr 90px; align-items: center; gap: 14px; margin-bottom: 14px; }
+    label { font-size: 18px; }
+    .value { font-size: 18px; }
+
+    /* ---------- Карточки-«полароиды» (осциллятор и фильтр) ---------- */
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 18px; }
+    .polaroid { background: #9c9ca0; padding: 18px 18px 90px; }
+    .polaroid:nth-child(1) { transform: rotate(-2deg); }
+    .polaroid:nth-child(2) { transform: rotate(1.5deg); }
+    .polaroid-inner { background: #231a24; padding: 20px 22px 26px; }
+    h3 { margin: 0 0 18px; font-family: 'Comfortaa', sans-serif; font-weight: 700; font-size: 30px; }
+    .field { margin-bottom: 16px; }
+    .field > label { display: block; margin-bottom: 6px; font-size: 17px; }
+    .field .row { grid-template-columns: 1fr 70px; margin: 0; }
+
+    /* ---------- Выпадающие списки ---------- */
+    select {
+      appearance: none;
+      width: 100%;
+      max-width: 250px;
+      padding: 10px 40px 10px 14px;
+      font: 600 16px 'Noto Sans', sans-serif;
+      text-transform: uppercase;
+      color: #fff;
+      background: #231a24 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='14'%3E%3Cpath d='M0 0h20L10 14z' fill='white'/%3E%3C/svg%3E") no-repeat right 12px center;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
+
+    /* ---------- Ползунки ---------- */
+    input[type=range] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 22px; background: transparent; margin: 0;
+      --fill: 50%;   /* сколько дорожки закрашено белым (меняется из JS) */
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      height: 22px;
+      background:
+        linear-gradient(#fff, #fff) left center / var(--fill) 4px no-repeat,
+        linear-gradient(rgba(255,255,255,.45), rgba(255,255,255,.45)) center / 100% 1px no-repeat;
+    }
+    input[type=range]::-moz-range-track {
+      height: 22px;
+      background:
+        linear-gradient(#fff, #fff) left center / var(--fill) 4px no-repeat,
+        linear-gradient(rgba(255,255,255,.45), rgba(255,255,255,.45)) center / 100% 1px no-repeat;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 44px; height: 22px; border-radius: 12px;
+      background: linear-gradient(#eaa642, #b8620f);
+      border: 1px solid #f4c37a;
+    }
+    input[type=range]::-moz-range-thumb {
+      width: 42px; height: 20px; border-radius: 12px;
+      background: linear-gradient(#eaa642, #b8620f);
+      border: 1px solid #f4c37a;
+    }
+
+    /* ---------- Адаптив ---------- */
+    @media (max-width: 1000px) {
+      .voices { grid-template-columns: 1fr; padding: 0 20px 60px; }
+    }
+    @media (max-width: 600px) {
+      .cards { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 90px 1fr 70px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>LIS SINTEZATOR</h1>
+    <p class="subtitle">собери мелодию осени</p>
+  </header>
+
+  <main class="voices">
+
+    <!-- ===================== ГОЛОС 1: MAX ===================== -->
+    <section class="voice" id="max">
+      <div class="panel">
+        <h2>Max</h2>
+        <div class="buttons">
+          <button class="play-btn">▶ ИГРАТЬ</button>
+          <button class="stop-btn">■ СТОП</button>
+        </div>
+        <div class="row">
+          <label>Темп</label>
+          <input type="range" class="tempo" min="40" max="120" step="1" value="78" />
+          <span class="value tempo-value">78 bpm</span>
+        </div>
+        <div class="row">
+          <label>Громкость</label>
+          <input type="range" class="volume" min="0" max="1" step="0.1" value="0.8" />
+          <span class="value volume-value">0.8</span>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="polaroid"><div class="polaroid-inner">
+          <h3>Осциллятор</h3>
+          <div class="field">
+            <label>Форма волны</label>
+            <select class="wave">
+              <option value="triangle">Треугольник</option>
+              <option value="sine">Синус</option>
+              <option value="square">Квадрат</option>
+              <option value="sawtooth">Пила</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Октава</label>
+            <select class="octave">
+              <option value="-12">Ниже</option>
+              <option value="0" selected>Обычная</option>
+              <option value="12">Выше</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Расстройка</label>
+            <div class="row">
+              <input type="range" class="detune" min="-100" max="100" step="1" value="0" />
+              <span class="value detune-value">0 ct</span>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="polaroid"><div class="polaroid-inner">
+          <h3>Фильтр</h3>
+          <div class="field">
+            <label>Тип</label>
+            <select class="filter-type">
+              <option value="lowpass">Срез верха</option>
+              <option value="highpass">Срез низа</option>
+              <option value="bandpass">Полоса</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Частота</label>
+            <div class="row">
+              <input type="range" class="cutoff" min="100" max="5000" step="10" value="1800" />
+              <span class="value cutoff-value">1800 Гц</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Резонанс</label>
+            <div class="row">
+              <input type="range" class="resonance" min="0" max="10" step="0.5" value="3" />
+              <span class="value resonance-value">3</span>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ===================== ГОЛОС 2: CHLOE ===================== -->
+    <section class="voice" id="chloe">
+      <div class="panel">
+        <h2>Chloe</h2>
+        <div class="buttons">
+          <button class="play-btn">▶ ИГРАТЬ</button>
+          <button class="stop-btn">■ СТОП</button>
+        </div>
+        <div class="row">
+          <label>Темп</label>
+          <input type="range" class="tempo" min="40" max="120" step="1" value="78" />
+          <span class="value tempo-value">78 bpm</span>
+        </div>
+        <div class="row">
+          <label>Громкость</label>
+          <input type="range" class="volume" min="0" max="1" step="0.1" value="0.8" />
+          <span class="value volume-value">0.8</span>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="polaroid"><div class="polaroid-inner">
+          <h3>Осциллятор</h3>
+          <div class="field">
+            <label>Форма волны</label>
+            <select class="wave">
+              <option value="triangle">Треугольник</option>
+              <option value="sine">Синус</option>
+              <option value="square">Квадрат</option>
+              <option value="sawtooth">Пила</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Октава</label>
+            <select class="octave">
+              <option value="-12">Ниже</option>
+              <option value="0" selected>Обычная</option>
+              <option value="12">Выше</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Расстройка</label>
+            <div class="row">
+              <input type="range" class="detune" min="-100" max="100" step="1" value="0" />
+              <span class="value detune-value">0 ct</span>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="polaroid"><div class="polaroid-inner">
+          <h3>Фильтр</h3>
+          <div class="field">
+            <label>Тип</label>
+            <select class="filter-type">
+              <option value="lowpass">Срез верха</option>
+              <option value="highpass">Срез низа</option>
+              <option value="bandpass">Полоса</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Частота</label>
+            <div class="row">
+              <input type="range" class="cutoff" min="100" max="5000" step="10" value="1800" />
+              <span class="value cutoff-value">1800 Гц</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Резонанс</label>
+            <div class="row">
+              <input type="range" class="resonance" min="0" max="10" step="0.5" value="3" />
+              <span class="value resonance-value">3</span>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ============ МЕЛОДИИ ============
+
+    // Мелодия Max ("Mt Washington")
+    const melodyMax = [
+      { time: 0.0, noteName: 'E4', duration: '8n', velocity: 1 },
+      { time: 0.5, noteName: 'D4', duration: '8n', velocity: 1 },
+      { time: 1.0, noteName: 'C4', duration: '8n', velocity: 1 },
+      { time: 1.5, noteName: 'A3', duration: '8n', velocity: 1 },
+      { time: 2.0, noteName: 'C4', duration: '8n', velocity: 1 },
+      { time: 2.5, noteName: 'C4', duration: '4n', velocity: 1 },
+      { time: 3.5, noteName: 'A3', duration: '8n', velocity: 1 },
+      { time: 4.0, noteName: 'G3', duration: '2n', velocity: 1 }
+    ]
+
+    // Мелодия Chloe
+    const melodyChloe = [
+      { time: 0.0, noteName: 'E4', duration: '8n', velocity: 1 },
+      { time: 0.5, noteName: 'E4', duration: '8n', velocity: 1 },
+      { time: 1.0, noteName: 'D4', duration: '8n', velocity: 1 },
+      { time: 1.5, noteName: 'C4', duration: '8n', velocity: 1 },
+      { time: 2.0, noteName: 'A3', duration: '4n', velocity: 1 },
+      { time: 3.0, noteName: 'A3', duration: '8n', velocity: 1 },
+      { time: 3.5, noteName: 'C4', duration: '8n', velocity: 1 },
+      { time: 4.0, noteName: 'D4', duration: '8n', velocity: 1 },
+      { time: 4.5, noteName: 'C4', duration: '2n', velocity: 1 }
+    ]
+
+    // ============ ФУНКЦИЯ, КОТОРАЯ СОБИРАЕТ ОДИН ГОЛОС ============
+    // sectionId — id блока на странице ('max' или 'chloe'), melody — массив нот.
+    // Мы пишем код один раз и применяем его к обоим голосам.
+    function createVoice(sectionId, melody) {
+      // Блок этого голоса. Все поиски дальше идут только внутри него.
+      const box = document.getElementById(sectionId)
+
+      // Находим все элементы управления (по классам из HTML)
+      const playBtn = box.querySelector('.play-btn')
+      const stopBtn = box.querySelector('.stop-btn')
+      const tempo = box.querySelector('.tempo')
+      const volume = box.querySelector('.volume')
+      const wave = box.querySelector('.wave')
+      const octave = box.querySelector('.octave')
+      const detune = box.querySelector('.detune')
+      const filterType = box.querySelector('.filter-type')
+      const cutoff = box.querySelector('.cutoff')
+      const resonance = box.querySelector('.resonance')
+
+      // ---------- Звуковая цепочка: синтезатор → фильтр → громкость → колонки ----------
+      const gain = new Tone.Gain(0.8).toDestination() // громкость (0–1)
+      const filter = new Tone.Filter(1800, 'lowpass').connect(gain) // фильтр
+      filter.Q.value = 3 // резонанс
+      const synth = new Tone.Synth({ oscillator: { type: 'triangle' } }).connect(filter)
+
+      // Сдвиг октавы в полутонах: -12, 0 или +12
+      let octaveShift = 0
+
+      // Темп, при котором мелодия звучит «как записана»
+      const BASE_BPM = 78
+
+      // ---------- Партия с нотами ----------
+      const part = new Tone.Part((time, note) => {
+        // Переносим ноту на выбранную октаву и узнаём её частоту в герцах
+        const freq = Tone.Frequency(note.noteName).transpose(octaveShift).toFrequency()
+        // Длину ноты переводим в секунды и подгоняем под текущий темп
+        const length = Tone.Time(note.duration).toSeconds() / part.playbackRate
+        synth.triggerAttackRelease(freq, length, time, note.velocity)
+      }, melody)
+
+      part.loop = true // повторять мелодию
+      part.loopEnd = 6 // длина одного круга — 6 секунд
+
+      // ---------- Закрашивание дорожки ползунка белым ----------
+      function setFill(slider) {
+        const percent = ((slider.value - slider.min) / (slider.max - slider.min)) * 100
+        slider.style.setProperty('--fill', percent + '%')
+      }
+
+      // Закрашиваем все ползунки этого голоса сразу при загрузке
+      box.querySelectorAll('input[type=range]').forEach((slider) => {
+        setFill(slider)
+        slider.addEventListener('input', () => setFill(slider))
+      })
+
+      // ---------- Кнопки ИГРАТЬ / СТОП ----------
+      playBtn.addEventListener('click', async () => {
+        await Tone.start() // браузер разрешает звук только после клика
+        if (Tone.Transport.state !== 'started') {
+          Tone.Transport.start() // общие часы Tone.js
+        }
+        part.stop() // на случай, если уже играет — начнём с начала
+        part.start(Tone.Transport.seconds + 0.1) // запускаем партию «прямо сейчас»
+        playBtn.classList.add('active')
+      })
+
+      stopBtn.addEventListener('click', () => {
+        part.stop() // останавливаем ноты
+        synth.triggerRelease() // глушим ноту, которая ещё звучит
+        playBtn.classList.remove('active')
+      })
+
+      // ---------- Темп и громкость ----------
+      tempo.addEventListener('input', () => {
+        const bpm = Number(tempo.value)
+        box.querySelector('.tempo-value').textContent = bpm + ' bpm'
+        part.playbackRate = bpm / BASE_BPM // 78 bpm = обычная скорость
+      })
+
+      volume.addEventListener('input', () => {
+        gain.gain.value = Number(volume.value)
+        box.querySelector('.volume-value').textContent = volume.value
+      })
+
+      // ---------- Осциллятор ----------
+      wave.addEventListener('change', () => {
+        synth.oscillator.type = wave.value // sine, triangle, square, sawtooth
+      })
+
+      octave.addEventListener('change', () => {
+        octaveShift = Number(octave.value) // применится к следующим нотам
+      })
+
+      detune.addEventListener('input', () => {
+        synth.detune.value = Number(detune.value) // расстройка в центах
+        box.querySelector('.detune-value').textContent = detune.value + ' ct'
+      })
+
+      // ---------- Фильтр ----------
+      filterType.addEventListener('change', () => {
+        filter.type = filterType.value // lowpass, highpass, bandpass
+      })
+
+      cutoff.addEventListener('input', () => {
+        filter.frequency.value = Number(cutoff.value)
+        box.querySelector('.cutoff-value').textContent = cutoff.value + ' Гц'
+      })
+
+      resonance.addEventListener('input', () => {
+        filter.Q.value = Number(resonance.value)
+        box.querySelector('.resonance-value').textContent = resonance.value
+      })
+    }
+
+    // Запускаем сборку обоих голосов
+    createVoice('max', melodyMax)
+    createVoice('chloe', melodyChloe)
+  </script>
+</body>
+</html>

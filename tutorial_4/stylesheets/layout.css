@@ -99,3 +99,95 @@ body {
 .photo_4 {
   height: 23.4vw;
 }
+
+.max,
+.chloe {
+  font-family: 'BalsamiqSans';
+  font-size: 2.3vw;
+  color: var(--font);
+  padding-left: 1vw;
+  padding-top: 1.5vw;
+  font-weight: 400;
+}
+
+.buttons {
+  display: flex;
+  gap: 1.5vw;
+  margin-bottom: 2vw;
+  margin-top: 1.2vw;
+  padding-left: 1vw;
+}
+
+button {
+  font-family: 'OpenSans';
+  font-size: 1vw;
+  color: var(--font);
+  padding: 0.3vw 0.5vw;
+  background: transparent;
+  border: 0.05vw solid rgb(255, 255, 255, 1);
+  border-radius: 0.2vw;
+  cursor: pointer;
+}
+button.play-btn {
+  border-color: #fff2a5;
+  background: linear-gradient(90deg, #241822, #92230e, #bf6513);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 10vw 1fr 8vw;
+  align-items: center;
+  gap: 1.2vw;
+  margin-bottom: 1.4vw;
+}
+label {
+  font-size: 1vw;
+  font-family: 'OpenSans';
+  font-weight: 500;
+  padding-left: 1vw;
+  color: var(--font);
+}
+.value {
+  font-size: 1vw;
+  font-family: 'OpenSans';
+  font-weight: 500;
+  color: var(--font);
+}
+span {
+  font-size: 1vw;
+  font-family: 'OpenSans';
+  font-weight: 500;
+  color: var(--font);
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.5vw;
+  background: transparent;
+  margin: 0 auto;
+  --fill: 50%;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 1.5vw;
+  background:
+    linear-gradient(#fff, #fff) left center / var(--fill) 4px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45))
+      center / 100% 1px no-repeat;
+}
+input[type='range']::-moz-range-track {
+  height: 1.5vw;
+  background:
+    linear-gradient(#fff, #fff) left center / var(--fill) 0.2vw no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45))
+      center / 100% 0.1vw no-repeat;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2.4vw;
+  height: 1.5vw;
+  border-radius: 1.4vw;
+  background: linear-gradient(#d7942b, #c25500);
+  border: 0.1vw solid var(--font);
+}
