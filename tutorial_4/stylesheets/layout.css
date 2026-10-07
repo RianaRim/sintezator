@@ -89,7 +89,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding-left: 6vw;
+  /* padding-left: 6vw; */
   gap: 1.7vw;
 }
 
@@ -98,6 +98,21 @@ body {
 .photo_3,
 .photo_4 {
   height: 23.4vw;
+  position: absolute;
+  z-index: -10;
+}
+
+.photo_1 {
+  left: 5vw;
+}
+.photo_2 {
+  left: 28vw;
+}
+.photo_3 {
+  left: 51vw;
+}
+.photo_4 {
+  left: 74vw;
 }
 
 .max,
@@ -127,10 +142,36 @@ button {
   border: 0.05vw solid rgb(255, 255, 255, 1);
   border-radius: 0.2vw;
   cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background-position 0.4s ease;
 }
-button.play-btn {
+button:hover {
   border-color: #fff2a5;
   background: linear-gradient(90deg, #241822, #92230e, #bf6513);
+}
+button.play-btn {
+  border-color: #ffffff;
+  background-size: 200% 100%;
+  background-position: 0 0;
+}
+
+button.play-btn:hover {
+  background-position: 100% 0;
+  color: #fff;
+  border-color: #fff2a5;
+}
+button.stop-btn {
+  border-color: #ffffff;
+  background-size: 200% 100%;
+  background-position: 0 0;
+}
+
+button.stop-btn:hover {
+  background-position: 100% 0;
+  color: #fff;
+  border-color: #fff2a5;
 }
 
 .row {
@@ -148,6 +189,7 @@ label {
   color: var(--font);
 }
 .value {
+  width: 4.5vw;
   font-size: 1vw;
   font-family: 'OpenSans';
   font-weight: 500;
@@ -190,4 +232,78 @@ input[type='range']::-webkit-slider-thumb {
   border-radius: 1.4vw;
   background: linear-gradient(#d7942b, #c25500);
   border: 0.1vw solid var(--font);
+}
+
+.card_1 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.5vw;
+  margin-left: 7.5vw;
+  transform: rotateZ(-3deg);
+  width: 17vw;
+}
+.card_2 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.9vw;
+  margin-left: 4.7vw;
+  transform: rotateZ(3deg);
+  width: 17vw;
+}
+.card_3 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.9vw;
+  margin-left: 4.2vw;
+  transform: rotateZ(-3deg);
+  width: 17vw;
+}
+.card_4 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.9vw;
+  margin-left: 4.5vw;
+  transform: rotateZ(3deg);
+  width: 17vw;
+}
+
+.field {
+  margin-bottom: 1vw;
+}
+.field > label {
+  display: block;
+  margin-bottom: 0.4vw;
+  font-size: 1.1vw;
+  font-family: 'OpenSans';
+}
+.efName_1,
+.efName_2,
+.efName_3 {
+  padding: 0;
+}
+.field .row {
+  margin: 0;
+}
+
+h3 {
+  margin: 0 0 1vw;
+  font-family: 'BalsamiqSans', sans-serif;
+  font-weight: 400;
+  font-size: 2vw;
+  color: var(--font);
+}
+
+select {
+  appearance: none;
+  width: 100%;
+  max-width: 12vw;
+  padding: 0.3vw 0.3vw 0.3vw 0.9vw;
+  font-family: 'OpenSans', sans-serif;
+  font-size: 1vw;
+  text-transform: uppercase;
+  color: var(--font);
+  background: #231a24 url('../images/triangleEf.svg') no-repeat right 12px
+    center;
+  border: 0.05vw solid rgba(255, 255, 255, 0.7);
+  border-radius: 0.2vw;
 }

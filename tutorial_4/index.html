@@ -9,7 +9,8 @@
     <title>LiS.sint</title>
     <link rel="stylesheet" href="stylesheets/style.css" />
     <link rel="icon" href="images/icon.png">
-    <script src="scripts/script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="scripts/script.js" defer></script>
   </head>
 
   <body>
@@ -21,7 +22,7 @@
 
    <!-- _________________секции с голосами_________________ -->
    <section class="voices">
-    <div class="glassCard_first" >
+    <div class="glassCard_first" id="max">
       <div class="glassEf">
         <h2 class="max">Max</h2>
         <div class="buttons">
@@ -31,16 +32,16 @@
         <div class="row">
           <label for="">Темп</label>
           <input type="range" class="tempo" min="40" max="120" step="1" value="78">
-          <span valueTempo>78 bpm</span>
+          <span class="tempo-value">78 bpm</span>
         </div>
         <div class="row">
           <label for="">Громкость</label>
           <input type="range" class="volume" min="0" max="1" step="0.1" value="0.8">
-          <span>0.8</span>
+          <span class="volume-value">0.8</span>
         </div>
       </div>
     </div>
-    <div class="glassCard_second" >
+    <div class="glassCard_second" id="chloe">
       <div class="glassEf">
         <h2 class="chloe">Chloe</h2>
         <div class="buttons">
@@ -50,18 +51,154 @@
         <div class="row">
           <label for="">Темп</label>
           <input type="range" class="tempo" min="40" max="120" step="1" value="78">
-          <span valueTempo>78 bpm</span>
+          <span class="tempo-value">78 bpm</span>
         </div>
         <div class="row">
           <label for="">Громкость</label>
           <input type="range" class="volume" min="0" max="1" step="0.1" value="0.8">
-          <span>0.8</span>
+          <span class="volume-value">0.8</span>
         </div>
       </div>
     </div>
    </section>
 
    <section class="effects">
+    <div class="card_1" id="osc-max">
+      <h3>Осциллятор</h3>
+      <div class="field">
+        <label class="efName_1">Форма волны</label>
+        <select class="wave">
+          <option value="triangle">Треугольник</option>
+          <option value="sine">Синус</option>
+          <option value="square">Квадрат</option>
+          <option value="sawtooth">Пила</option>
+        </select>
+      </div>
+      <div class="field">
+            <label class="efName_2">Октава</label>
+            <select class="octave">
+              <option value="-12">Ниже</option>
+              <option value="0" selected>Обычная</option>
+              <option value="12">Выше</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="efName_3">Расстройка</label>
+            <div class="row">
+              <input type="range" class="detune" min="-100" max="100" step="1" value="0" />
+              <span class="value detune-value">0 ct</span>
+            </div>
+          </div>
+    </div>
+
+    <div class="card_2" id="filter-max">
+      <h3>Фильтр</h3>
+              <div class="field">
+                <label>Тип</label>
+                <select class="filter-type">
+                  <option value="lowpass">Срез верха</option>
+                  <option value="highpass">Срез низа</option>
+                  <option value="bandpass">Полоса</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Частота</label>
+                <div class="row">
+                  <input
+                    type="range"
+                    class="cutoff"
+                    min="100"
+                    max="5000"
+                    step="10"
+                    value="1800"
+                  />
+                  <span class="value cutoff-value">1800 Гц</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Резонанс</label>
+                <div class="row">
+                  <input
+                    type="range"
+                    class="resonance"
+                    min="0"
+                    max="10"
+                    step="0.5"
+                    value="3"
+                  />
+                  <span class="value resonance-value">3</span>
+                </div>
+              </div>
+    </div>
+
+    <div class="card_3" id="osc-chloe">
+      <h3>Осциллятор</h3>
+      <div class="field">
+        <label class="efName_1">Форма волны</label>
+        <select class="wave">
+          <option value="triangle">Треугольник</option>
+          <option value="sine">Синус</option>
+          <option value="square">Квадрат</option>
+          <option value="sawtooth">Пила</option>
+        </select>
+      </div>
+      <div class="field">
+            <label class="efName_2">Октава</label>
+            <select class="octave">
+              <option value="-12">Ниже</option>
+              <option value="0" selected>Обычная</option>
+              <option value="12">Выше</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="efName_3">Расстройка</label>
+            <div class="row">
+              <input type="range" class="detune" min="-100" max="100" step="1" value="0" />
+              <span class="value detune-value">0 ct</span>
+            </div>
+          </div>
+    </div>
+
+    <div class="card_4" id="filter-chloe">
+      <h3>Фильтр</h3>
+              <div class="field">
+                <label>Тип</label>
+                <select class="filter-type">
+                  <option value="lowpass">Срез верха</option>
+                  <option value="highpass">Срез низа</option>
+                  <option value="bandpass">Полоса</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Частота</label>
+                <div class="row">
+                  <input
+                    type="range"
+                    class="cutoff"
+                    min="100"
+                    max="5000"
+                    step="10"
+                    value="1800"
+                  />
+                  <span class="value cutoff-value">1800 Гц</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Резонанс</label>
+                <div class="row">
+                  <input
+                    type="range"
+                    class="resonance"
+                    min="0"
+                    max="10"
+                    step="0.5"
+                    value="3"
+                  />
+                  <span class="value resonance-value">3</span>
+                </div>
+              </div>
+    </div>
+          
     <img src="images/photoCard_one.png" alt="" class="photo_1">
     <img src="images/photoCard_two.png" alt="" class="photo_2">
     <img src="images/photoCard_one.png" alt="" class="photo_3">
