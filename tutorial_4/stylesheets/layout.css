@@ -50,6 +50,47 @@ body {
   color: var(--font);
 }
 
+.sticker_1,
+.sticker_2,
+.sticker_3,
+.sticker_4 {
+  width: 8vw;
+  position: absolute;
+  z-index: 1;
+}
+.sticker_1 {
+  top: 9vw;
+  left: 19vw;
+  transition: transform 0.5s ease;
+}
+.sticker_1:hover {
+  transform: rotate(10deg) translateX(2vw) translateY(1.5vw);
+}
+.sticker_2 {
+  top: 9vw;
+  left: 74vw;
+  transition: transform 0.5s ease;
+}
+.sticker_2:hover {
+  transform: rotate(-10deg) translateX(-2vw) translateY(-1.5vw);
+}
+.sticker_3 {
+  top: 34vw;
+  left: 20vw;
+  transition: transform 0.5s ease;
+}
+.sticker_3:hover {
+  transform: rotate(10deg) translateX(-2vw) translateY(-1.5vw);
+}
+.sticker_4 {
+  top: 34vw;
+  left: 67vw;
+  transition: transform 0.5s ease;
+}
+.sticker_4:hover {
+  transform: rotate(-10deg) translateX(2vw) translateY(1.5vw);
+}
+
 .voices {
   height: 47%;
   display: flex;
