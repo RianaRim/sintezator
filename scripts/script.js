@@ -12,7 +12,7 @@ const melodyMax = [
   { time: 4.0, noteName: 'G3', duration: '2n', velocity: 1 }
 ]
 
-// Мелодия Chloe
+// Мелодия Chloe ("Obstacles")
 const melodyChloe = [
   { time: 0.0, noteName: 'E4', duration: '8n', velocity: 1 },
   { time: 0.5, noteName: 'E4', duration: '8n', velocity: 1 },
@@ -27,13 +27,12 @@ const melodyChloe = [
 
 // ============ ФУНКЦИЯ, КОТОРАЯ СОБИРАЕТ ОДИН ГОЛОС ============
 // sectionId — id блока на странице ('max' или 'chloe'), melody — массив нот.
-// Мы пишем код один раз и применяем его к обоим голосам.
 function createVoice(sectionId, oscId, filterId, melody) {
   const box = document.getElementById(sectionId) // кнопки, темп, громкость
   const oscBox = document.getElementById(oscId) // карточка осциллятора
   const filterBox = document.getElementById(filterId) // карточка фильтра
 
-  // Находим все элементы управления (по классам из HTML)
+  // элементы управления (по классам из HTML)
   const playBtn = box.querySelector('.play-btn')
   const stopBtn = box.querySelector('.stop-btn')
   const tempo = box.querySelector('.tempo')
@@ -53,19 +52,17 @@ function createVoice(sectionId, oscId, filterId, melody) {
     oscillator: { type: 'triangle' }
   }).connect(filter)
 
-  // Сдвиг октавы в полутонах: -12, 0 или +12
+  // сдвиг октавы в полутонах: -12, 0 или +12
   let octaveShift = 0
 
-  // Темп, при котором мелодия звучит «как записана»
+  // темп, при котором мелодия звучит «как записана»
   const BASE_BPM = 78
 
   // ---------- Партия с нотами ----------
   const part = new Tone.Part((time, note) => {
-    // Переносим ноту на выбранную октаву и узнаём её частоту в герцах
     const freq = Tone.Frequency(note.noteName)
       .transpose(octaveShift)
       .toFrequency()
-    // Длину ноты переводим в секунды и подгоняем под текущий темп
     const length = Tone.Time(note.duration).toSeconds() / part.playbackRate
     synth.triggerAttackRelease(freq, length, time, note.velocity)
   }, melody)
@@ -80,7 +77,7 @@ function createVoice(sectionId, oscId, filterId, melody) {
     slider.style.setProperty('--fill', percent + '%')
   }
 
-  // Закрашиваем все ползунки этого голоса сразу при загрузке
+  // закрашивание всех ползунков этого голоса сразу при загрузке
   ;[box, oscBox, filterBox].forEach((block) => {
     block.querySelectorAll('input[type=range]').forEach((slider) => {
       setFill(slider)
@@ -90,12 +87,12 @@ function createVoice(sectionId, oscId, filterId, melody) {
 
   // ---------- Кнопки ИГРАТЬ / СТОП ----------
   playBtn.addEventListener('click', async () => {
-    await Tone.start() // браузер разрешает звук только после клика
+    await Tone.start()
     if (Tone.Transport.state !== 'started') {
       Tone.Transport.start() // общие часы Tone.js
     }
     part.stop() // на случай, если уже играет — начнём с начала
-    part.start(Tone.Transport.seconds + 0.1) // запускаем партию «прямо сейчас»
+    part.start(Tone.Transport.seconds + 0.1)
     playBtn.classList.add('active')
   })
 
@@ -147,6 +144,6 @@ function createVoice(sectionId, oscId, filterId, melody) {
   })
 }
 
-// Запускаем сборку обоих голосов
+// сборка обоих голосов
 createVoice('max', 'osc-max', 'filter-max', melodyMax)
 createVoice('chloe', 'osc-chloe', 'filter-chloe', melodyChloe)
