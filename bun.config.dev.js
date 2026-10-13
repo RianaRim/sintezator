@@ -1,6 +1,6 @@
 import { join, dirname } from 'node:path'
 
-import index from './tutorial_4/index.html'
+import index from './index.html'
 // import elementsReact from './src/elements-react.html'
 
 // import amSynth from './src/tone-examples/instruments/am-synth.html'

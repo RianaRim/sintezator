@@ -34,17 +34,17 @@
       <div class="glassEf">
         <h2 class="max">Max</h2>
         <div class="buttons">
-          <button class="play-btn">▶ ИГРАТЬ</button>
-          <button class="stop-btn">■ СТОП</button>
+          <button class="play-btn buttonMax">▶ ИГРАТЬ</button>
+          <button class="stop-btn buttonMax">■ СТОП</button>
         </div>
         <div class="row">
           <label for="">Темп</label>
-          <input type="range" class="tempo" min="40" max="120" step="1" value="78">
+          <input type="range" class="tempo" id="tempoMax" min="40" max="120" step="1" value="78">
           <span class="tempo-value">78 bpm</span>
         </div>
         <div class="row">
           <label for="">Громкость</label>
-          <input type="range" class="volume" min="0" max="1" step="0.1" value="0.8">
+          <input type="range" class="volume" id="volumeMax" min="0" max="1" step="0.1" value="0.8">
           <span class="volume-value">0.8</span>
         </div>
       </div>
@@ -53,17 +53,17 @@
       <div class="glassEf">
         <h2 class="chloe">Chloe</h2>
         <div class="buttons">
-          <button class="play-btn">▶ ИГРАТЬ</button>
-          <button class="stop-btn">■ СТОП</button>
+          <button class="play-btn buttonChloe">▶ ИГРАТЬ</button>
+          <button class="stop-btn buttonChloe">■ СТОП</button>
         </div>
         <div class="row">
           <label for="">Темп</label>
-          <input type="range" class="tempo" min="40" max="120" step="1" value="78">
+          <input type="range" class="tempo" id="tempoChloe" min="40" max="120" step="1" value="78">
           <span class="tempo-value">78 bpm</span>
         </div>
         <div class="row">
           <label for="">Громкость</label>
-          <input type="range" class="volume" min="0" max="1" step="0.1" value="0.8">
+          <input type="range" class="volume" id="volumeChloe" min="0" max="1" step="0.1" value="0.8">
           <span class="volume-value">0.8</span>
         </div>
       </div>
@@ -94,7 +94,7 @@
           <div class="field">
             <label class="efName_3">Расстройка</label>
             <div class="row">
-              <input type="range" class="detune" min="-100" max="100" step="1" value="0" />
+              <input type="range" class="detune" id="detuneMax" min="-100" max="100" step="1" value="0" />
               <span class="value detune-value">0 ct</span>
             </div>
           </div>
@@ -115,7 +115,7 @@
                 <div class="row">
                   <input
                     type="range"
-                    class="cutoff"
+                    class="cutoff" id="cutoffMax"
                     min="100"
                     max="5000"
                     step="10"
@@ -129,7 +129,7 @@
                 <div class="row">
                   <input
                     type="range"
-                    class="resonance"
+                    class="resonance" id="resonanceMax"
                     min="0"
                     max="10"
                     step="0.5"
@@ -162,7 +162,7 @@
           <div class="field">
             <label class="efName_3">Расстройка</label>
             <div class="row">
-              <input type="range" class="detune" min="-100" max="100" step="1" value="0" />
+              <input type="range" class="detune" id="detuneChloe" min="-100" max="100" step="1" value="0" />
               <span class="value detune-value">0 ct</span>
             </div>
           </div>
@@ -183,7 +183,7 @@
                 <div class="row">
                   <input
                     type="range"
-                    class="cutoff"
+                    class="cutoff" id="cutoffChloe"
                     min="100"
                     max="5000"
                     step="10"
@@ -197,7 +197,7 @@
                 <div class="row">
                   <input
                     type="range"
-                    class="resonance"
+                    class="resonance" id="resonanceChloe"
                     min="0"
                     max="10"
                     step="0.5"
