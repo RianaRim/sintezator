@@ -20,7 +20,7 @@
     <!-- _______________Название синтезатора_______________ -->
    <section class="sintName">
     <h1 class="lis">LIS SINTEZATOR</h1>
-    <p class="autumn">собери мелодию осени</p>
+    <p class="autumn">Put together the melody of autumn</p>
    </section>
 
    <img src="images/cdDisk.png" alt="" class="sticker_1">
@@ -34,16 +34,18 @@
       <div class="glassEf">
         <h2 class="max">Max</h2>
         <div class="buttons">
-          <button class="play-btn buttonMax">▶ ИГРАТЬ</button>
-          <button class="stop-btn buttonMax">■ СТОП</button>
+          <button class="play-btn buttonMax">
+            <img src="./images/swirl.svg" class="spiral" alt="Иконка">STORM</button>
+          <button class="stop-btn buttonMax">
+            <img src="./images/spiral_original.svg" class="spiral" alt="Иконка">REWIND</button>
         </div>
         <div class="row">
-          <label for="">Темп</label>
+          <label for=""><img src="./images/arrow_spiral_original.svg" class="spiral" alt="Иконка"></label>
           <input type="range" class="tempo" id="tempoMax" min="40" max="120" step="1" value="78">
           <span class="tempo-value">78 bpm</span>
         </div>
         <div class="row">
-          <label for="">Громкость</label>
+          <label for=""><img src="./images/mps.svg" class="spiral" alt="Иконка"></label>
           <input type="range" class="volume" id="volumeMax" min="0" max="1" step="0.1" value="0.8">
           <span class="volume-value">0.8</span>
         </div>
@@ -53,16 +55,16 @@
       <div class="glassEf">
         <h2 class="chloe">Chloe</h2>
         <div class="buttons">
-          <button class="play-btn buttonChloe">▶ ИГРАТЬ</button>
-          <button class="stop-btn buttonChloe">■ СТОП</button>
+          <button class="play-btn buttonChloe"><img src="./images/stylized_a.svg" class="spiral" alt="Иконка">RACHEL</button>
+          <button class="stop-btn buttonChloe"><img src="./images/dad.svg" class="spiral" alt="Иконка">WILLIAM</button>
         </div>
         <div class="row">
-          <label for="">Темп</label>
+          <label for=""><img src="./images/bag.svg" class="spiral" alt="Иконка"></label>
           <input type="range" class="tempo" id="tempoChloe" min="40" max="120" step="1" value="78">
           <span class="tempo-value">78 bpm</span>
         </div>
         <div class="row">
-          <label for="">Громкость</label>
+          <label for=""><img src="./images/circle_logo.svg" class="spiral" alt="Иконка"></label>
           <input type="range" class="volume" id="volumeChloe" min="0" max="1" step="0.1" value="0.8">
           <span class="volume-value">0.8</span>
         </div>
@@ -73,26 +75,26 @@
    <!-- ___________________секция с эффектами___________________ -->
    <section class="effects">
     <div class="card_1" id="osc-max">
-      <h3>Осциллятор</h3>
+      <h3>TWO WALES</h3>
       <div class="field">
-        <label class="efName_1">Форма волны</label>
+        <label class="efName_1">Joyce</label>
         <select class="wave">
-          <option value="triangle">Треугольник</option>
-          <option value="sine">Синус</option>
-          <option value="square">Квадрат</option>
-          <option value="sawtooth">Пила</option>
+          <option value="triangle">fried egg</option>
+          <option value="sine">waffles</option>
+          <option value="square">coffee</option>
+          <option value="sawtooth">salad</option>
         </select>
       </div>
       <div class="field">
-            <label class="efName_2">Октава</label>
+            <label class="efName_2">Warren</label>
             <select class="octave">
-              <option value="-12">Ниже</option>
-              <option value="0" selected>Обычная</option>
-              <option value="12">Выше</option>
+              <option value="-12">maximus</option>
+              <option value="0" selected>go appes</option>
+              <option value="12">C U TE</option>
             </select>
           </div>
           <div class="field">
-            <label class="efName_3">Расстройка</label>
+            <label class="efName_3">Menu</label>
             <div class="row">
               <input type="range" class="detune" id="detuneMax" min="-100" max="100" step="1" value="0" />
               <span class="value detune-value">0 ct</span>
@@ -101,17 +103,17 @@
     </div>
 
     <div class="card_2" id="filter-max">
-      <h3>Фильтр</h3>
+      <h3>DARK ROOM</h3>
               <div class="field">
-                <label>Тип</label>
+                <label>Vortex Club</label>
                 <select class="filter-type">
-                  <option value="lowpass">Срез верха</option>
-                  <option value="highpass">Срез низа</option>
-                  <option value="bandpass">Полоса</option>
+                  <option value="lowpass">Victoria</option>
+                  <option value="highpass">Nathan</option>
+                  <option value="bandpass">Mark Jefferson</option>
                 </select>
               </div>
               <div class="field">
-                <label>Частота</label>
+                <label>San Francisco</label>
                 <div class="row">
                   <input
                     type="range"
@@ -125,7 +127,7 @@
                 </div>
               </div>
               <div class="field">
-                <label>Резонанс</label>
+                <label>Everyday Hero</label>
                 <div class="row">
                   <input
                     type="range"
@@ -141,26 +143,26 @@
     </div>
 
     <div class="card_3" id="osc-chloe">
-      <h3>Осциллятор</h3>
+      <h3>JUNK YARD</h3>
       <div class="field">
-        <label class="efName_1">Форма волны</label>
+        <label class="efName_1">Frank</label>
         <select class="wave">
-          <option value="triangle">Треугольник</option>
-          <option value="sine">Синус</option>
-          <option value="square">Квадрат</option>
-          <option value="sawtooth">Пила</option>
+          <option value="triangle">Braclet</option>
+          <option value="sine">Pompidou</option>
+          <option value="square">Lion</option>
+          <option value="sawtooth">Bigfoots</option>
         </select>
       </div>
       <div class="field">
-            <label class="efName_2">Октава</label>
+            <label class="efName_2">David</label>
             <select class="octave">
-              <option value="-12">Ниже</option>
-              <option value="0" selected>Обычная</option>
-              <option value="12">Выше</option>
+              <option value="-12">War Veteran</option>
+              <option value="0" selected>StepDoushe</option>
+              <option value="12">Father</option>
             </select>
           </div>
           <div class="field">
-            <label class="efName_3">Расстройка</label>
+            <label class="efName_3">Bluebeard</label>
             <div class="row">
               <input type="range" class="detune" id="detuneChloe" min="-100" max="100" step="1" value="0" />
               <span class="value detune-value">0 ct</span>
@@ -169,17 +171,17 @@
     </div>
 
     <div class="card_4" id="filter-chloe">
-      <h3>Фильтр</h3>
+      <h3>STORM</h3>
               <div class="field">
-                <label>Тип</label>
+                <label>October 11th</label>
                 <select class="filter-type">
-                  <option value="lowpass">Срез верха</option>
-                  <option value="highpass">Срез низа</option>
-                  <option value="bandpass">Полоса</option>
+                  <option value="lowpass">Bumper shot</option>
+                  <option value="highpass">Train rail</option>
+                  <option value="bandpass">Blackwell Academy</option>
                 </select>
               </div>
               <div class="field">
-                <label>Частота</label>
+                <label>Memories</label>
                 <div class="row">
                   <input
                     type="range"
@@ -193,7 +195,7 @@
                 </div>
               </div>
               <div class="field">
-                <label>Резонанс</label>
+                <label>Everybody lies</label>
                 <div class="row">
                   <input
                     type="range"

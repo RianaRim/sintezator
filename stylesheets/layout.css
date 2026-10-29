@@ -104,7 +104,7 @@ body {
   width: 45vw;
   height: 18vw;
   display: flex;
-  padding-left: 3vw;
+  /* padding-left: 3vw; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -193,13 +193,19 @@ button {
   color: var(--font);
   padding: 0.3vw 0.5vw;
   background: transparent;
-  border: 0.05vw solid rgb(255, 255, 255, 1);
+  /* border: 0.05vw solid rgb(255, 255, 255, 1); */
+  border: none;
   border-radius: 0.2vw;
   cursor: pointer;
   transition:
     border-color 0.3s ease,
     color 0.3s ease,
     background-position 0.4s ease;
+}
+
+.spiral {
+  width: 2vw;
+  height: 2vw;
 }
 
 .buttonMax::before,
@@ -234,6 +240,9 @@ button.play-btn {
   border-color: #ffffff;
   background-size: 200% 100%;
   background-position: 0 0;
+  display: flex;
+  gap: 0.5vw;
+  align-items: center;
 }
 
 button.play-btn:hover {
@@ -245,6 +254,9 @@ button.stop-btn {
   border-color: #ffffff;
   background-size: 200% 100%;
   background-position: 0 0;
+  display: flex;
+  gap: 0.5vw;
+  align-items: center;
 }
 
 button.stop-btn:hover {
@@ -267,6 +279,15 @@ label {
   padding-left: 1vw;
   color: var(--font);
 }
+
+.tempo::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: #ddd;
+  border-radius: 4px;
+}
+
 .value {
   width: 4.5vw;
   font-size: 1vw;
@@ -306,42 +327,73 @@ input[type='range']::-moz-range-track {
 }
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 2.4vw;
-  height: 1.5vw;
-  border-radius: 1.4vw;
-  /* background: linear-gradient(#d7942b, #c25500); */
-  border: 0.1vw solid var(--font);
+  appearance: none;
+  width: 5vw;
+  height: 5vw;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  margin-top: -1.5vw;
 }
 
 #tempoMax[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#d7942b, #c25500);
+  background-image: url('..//images/firstSliderIcon.png');
+  /* background: linear-gradient(#d7942b, #c25500); */
 }
 #volumeMax[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#d7942b, #c25500);
+  background-image: url('..//images/secondSliderIcon.png');
+  /* background: linear-gradient(#d7942b, #c25500); */
 }
 #detuneMax[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#d7942b, #c25500);
+  background-image: url('..//images/fifthSliderIcon.png');
+  /* background: linear-gradient(#d7942b, #c25500); */
+  width: 3.5vw;
+  background-size: cover;
+  margin-left: -0.5vw;
 }
 #cutoffMax[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#d7942b, #c25500);
+  background-image: url('..//images/sixSliderIcon.png');
+  /* background: linear-gradient(#d7942b, #c25500); */
+  width: 3.5vw;
+  background-size: cover;
+  margin-left: -0.5vw;
 }
 #resonanceMax[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#d7942b, #c25500);
+  background-image: url('..//images/sevenSliderIcon.png');
+  /* background: linear-gradient(#d7942b, #c25500); */
+  width: 3.5vw;
+  background-size: cover;
+  margin-left: -0.5vw;
 }
 #tempoChloe[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#2b0e92, #b613bf);
+  background-image: url('..//images/thirdSliderIcon.png');
+  /* background: linear-gradient(#2b0e92, #b613bf); */
 }
 #volumeChloe[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#2b0e92, #b613bf);
+  background-image: url('..//images/fourthSliderIcon.png');
+  /* background: linear-gradient(#2b0e92, #b613bf); */
 }
 #detuneChloe[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#2b0e92, #b613bf);
+  background-image: url('..//images/eightSliderIcon.png');
+  /* background: linear-gradient(#2b0e92, #b613bf); */
+  width: 3vw;
+  background-size: cover;
+  margin-left: -0.5vw;
 }
 #cutoffChloe[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#2b0e92, #b613bf);
+  background-image: url('..//images/nineSliderIcon.png');
+  /* background: linear-gradient(#2b0e92, #b613bf); */
+  width: 2.3vw;
+  background-size: cover;
+  margin-left: -0.5vw;
 }
 #resonanceChloe[type='range']::-webkit-slider-thumb {
-  background: linear-gradient(#2b0e92, #b613bf);
+  background-image: url('..//images/tenSliderIcon.png');
+  /* background: linear-gradient(#2b0e92, #b613bf); */
+  width: 3.2vw;
+  background-size: cover;
+  margin-left: -0.5vw;
 }
 
 .card_1 {

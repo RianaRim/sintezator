@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Собственный символ — Custom Symbol Demo</title>
+  <style>
+    @font-face {
+      font-family: 'CustomSymbol';
+      src: url('CustomSymbol.woff') format('woff'),
+           url('CustomSymbol.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    :root {
+      --bg: #0a0a0a;
+      --fg: #ffffff;
+      --accent: #00d4ff;
+      --card: #1a1a1a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      padding: 1rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 1.8rem; margin: 1.5rem 0 0.5rem; }
+    h2 { font-size: 1.3rem; margin: 2rem 0 0.8rem; color: var(--accent); }
+    p { margin-bottom: 1rem; opacity: 0.9; }
+    .symbol-char {
+      font-family: 'CustomSymbol', sans-serif;
+      font-size: 6rem;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+      color: white;
+    }
+    .big-preview {
+      font-size: 12rem;
+      text-align: center;
+      margin: 2rem 0;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #333;
+    }
+    .card img, .card svg {
+      width: 100%;
+      height: auto;
+      max-height: 120px;
+      object-fit: contain;
+    }
+    .card code {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      display: block;
+      margin-top: 0.5rem;
+      word-break: break-all;
+    }
+    .copy-box {
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'CustomSymbol', monospace;
+      font-size: 2.5rem;
+      text-align: center;
+      cursor: pointer;
+      user-select: all;
+      margin: 1rem 0;
+    }
+    .copy-box:hover { border-color: var(--accent); }
+    .note {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      background: #151515;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    .usage {
+      background: #111;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: ui-monospace, monospace;
+      font-size: 0.85rem;
+      margin: 1rem 0;
+    }
+    .usage code { color: #7fdbca; }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #333;
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+    @media (max-width: 600px) {
+      .big-preview { font-size: 8rem; padding: 1rem; }
+      .symbol-char { font-size: 4rem; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Собственный символ (Custom Symbol)</h1>
+  <p>Комплект файлов для использования на сайте и в тексте. Прозрачный фон. Оптимизировано для телефона и компьютера.</p>
+
+  <div class="big-preview">
+    <span class="symbol-char" title="U+E000">&#xE000;</span>
+  </div>
+
+  <h2>1. Символ как текстовый глиф (U+E000)</h2>
+  <p>Скопируйте символ ниже — он вставлен как настоящий символ из шрифта (Private Use Area). Можно вставлять в текст, чаты, документы (если шрифт установлен или подключён через CSS).</p>
+  
+  <div class="copy-box" onclick="copyChar()" title="Кликните, чтобы скопировать">
+    &#xE000;
+  </div>
+  <p class="note">Код: <code>&#xE000;</code> или Unicode U+E000. Нажмите на блок выше, чтобы скопировать в буфер.</p>
+
+  <div class="usage">
+/* CSS для сайта */
+@font-face {
+  font-family: 'CustomSymbol';
+  src: url('CustomSymbol.woff') format('woff'),
+       url('CustomSymbol.ttf') format('truetype');
+}
+.my-icon::before {
+  content: "\E000";
+  font-family: 'CustomSymbol';
+  font-size: 1.5em;
+}
+  </div>
+
+  <h2>2. SVG-файлы (вектор + встроенные оригиналы)</h2>
+  <p>Все SVG с прозрачным фоном. Можно использовать как &lt;img&gt;, background-image или inline.</p>
+  
+  <div class="grid">
+    <div class="card">
+      <img src="spiral.svg" alt="Spiral (vector)">
+      <code>spiral.svg</code>
+    </div>
+    <div class="card">
+      <img src="spiral_original.svg" alt="Spiral original">
+      <code>spiral_original.svg</code>
+    </div>
+    <div class="card">
+      <img src="arrow_spiral.svg" alt="Arrow spiral">
+      <code>arrow_spiral.svg</code>
+    </div>
+    <div class="card">
+      <img src="arrow_spiral_original.svg" alt="Arrow spiral original">
+      <code>arrow_spiral_original.svg</code>
+    </div>
+    <div class="card">
+      <img src="bag.svg" alt="Bag">
+      <code>bag.svg</code>
+    </div>
+    <div class="card">
+      <img src="circle_logo.svg" alt="Circle logo">
+      <code>circle_logo.svg</code>
+    </div>
+    <div class="card">
+      <img src="swirl.svg" alt="Swirl">
+      <code>swirl.svg</code>
+    </div>
+    <div class="card">
+      <img src="stylized_a.svg" alt="Stylized A">
+      <code>stylized_a.svg</code>
+    </div>
+    <div class="card">
+      <img src="mps.svg" alt="MPS">
+      <code>mps.svg</code>
+    </div>
+    <div class="card">
+      <img src="dad.svg" alt="DAD">
+      <code>dad.svg</code>
+    </div>
+  </div>
+
+  <h2>3. Файлы шрифта</h2>
+  <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+    <li><code>CustomSymbol.ttf</code> — TrueType (для установки в систему)</li>
+    <li><code>CustomSymbol.woff</code> — для веб (меньше размер)</li>
+  </ul>
+  <p class="note">Глиф U+E000 — спираль (векторный контур). Можно заменить на любой другой символ из набора, пересобрав шрифт.</p>
+
+  <h2>4. Как использовать на сайте</h2>
+  <div class="usage">
+&lt;!-- Как иконка-картинка --&gt;
+&lt;img src="spiral.svg" alt="Symbol" width="48" height="48"&gt;
+
+&lt;!-- Как текстовый символ --&gt;
+&lt;span style="font-family: CustomSymbol;"&gt;&amp;#xE000;&lt;/span&gt;
+
+&lt;!-- CSS background --&gt;
+.icon {
+  background: url(spiral.svg) center / contain no-repeat;
+  width: 32px; height: 32px;
+}
+  </div>
+
+  <footer>
+    Подготовлено для телефона и компьютера · Прозрачный фон · Приоритет: сайт + копирование текста<br>
+    Символы: оригинальные рисунки + векторные версии спиралей
+  </footer>
+
+  <script>
+    function copyChar() {
+      const char = '\uE000';
+      navigator.clipboard.writeText(char).then(() => {
+        alert('Символ скопирован! Вставьте в любой текст (шрифт должен быть доступен).');
+      }).catch(() => {
+        // fallback
+        const range = document.createRange();
+        const sel = window.getSelection();
+        const el = document.querySelector('.copy-box');
+        range.selectNodeContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        alert('Выделите и скопируйте (Ctrl+C / Cmd+C)');
+      });
+    }
+  </script>
+</body>
+</html>
