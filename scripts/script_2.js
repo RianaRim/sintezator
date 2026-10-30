@@ -96,21 +96,21 @@ const SEC_PER_BEAT = 45 / BASE_BPM
 // Результат — один длинный список нот, где время считается в секундах
 function buildEvents(voiceScore, sections) {
   const events = []
-  let offset = 0 // сколько долей прошло до начала текущего блока
+  let offset = 0
 
   sections.forEach((section) => {
-    const notes = voiceScore[section.id] // ноты этого блока: intro, middle или end
+    const notes = voiceScore[section.id]
 
     notes.forEach((n) => {
       events.push({
-        time: (offset + n.beat) * SEC_PER_BEAT, // когда играть (в секундах)
-        noteName: n.name, // название ноты
-        duration: n.len * SEC_PER_BEAT, // сколько звучит (в секундах)
-        velocity: n.velocity // громкость ноты (может быть пустой — это нормально)
+        time: (offset + n.beat) * SEC_PER_BEAT,
+        noteName: n.name,
+        duration: n.len * SEC_PER_BEAT,
+        velocity: n.velocity
       })
     })
 
-    offset += section.bars * 4 // сдвигаем начало следующего блока (4 доли в такте)
+    offset += section.bars * 4
   })
 
   return events
@@ -118,10 +118,20 @@ function buildEvents(voiceScore, sections) {
 
 // ============ ФУНКЦИЯ, КОТОРАЯ СОБИРАЕТ ОДИН ГОЛОС ============
 // sectionId — id блока на странице ('max' или 'chloe'), voiceScore — ноты голоса.
-function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
-  const box = document.getElementById(sectionId) // кнопки, темп, громкость
-  const oscBox = document.getElementById(oscId) // карточка осциллятора
-  const filterBox = document.getElementById(filterId) // карточка фильтра
+function createVoice(
+  sectionId,
+  oscId,
+  filterId,
+  echoId,
+  reverbId,
+  voiceScore,
+  sections
+) {
+  const box = document.getElementById(sectionId)
+  const oscBox = document.getElementById(oscId)
+  const filterBox = document.getElementById(filterId)
+  const echoBox = document.getElementById(echoId)
+  const reverbBox = document.getElementById(reverbId)
 
   // элементы управления (по классам из HTML)
   const playBtn = box.querySelector('.play-btn')
@@ -134,11 +144,29 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
   const filterType = filterBox.querySelector('.filter-type')
   const cutoff = filterBox.querySelector('.cutoff')
   const resonance = filterBox.querySelector('.resonance')
+  const echoTime = echoBox.querySelector('.echo-time')
+  const echoWet = echoBox.querySelector('.echo-wet')
+  const echoFeedback = echoBox.querySelector('.echo-feedback')
+  const reverbWet = reverbBox.querySelector('.reverb-wet')
+  const reverbDecay = reverbBox.querySelector('.reverb-decay')
 
   // ---------- Звуковая цепочка: синтезатор → фильтр → громкость → колонки ----------
-  const gain = new Tone.Gain(0.8).toDestination() // громкость (0–1)
-  const filter = new Tone.Filter(1800, 'lowpass').connect(gain) // фильтр
-  filter.Q.value = 3 // резонанс
+  const gain = new Tone.Gain(0.8).toDestination()
+
+  const reverb = new Tone.Reverb({
+    decay: Number(reverbDecay.value),
+    wet: Number(reverbWet.value)
+  }).connect(gain)
+
+  const echo = new Tone.FeedbackDelay({
+    delayTime: 0.3,
+    feedback: Number(echoFeedback.value),
+    wet: Number(echoWet.value),
+    maxDelay: 4
+  }).connect(reverb)
+
+  const filter = new Tone.Filter(1800, 'lowpass').connect(echo)
+  filter.Q.value = 3
   const synth = new Tone.Synth({
     oscillator: { type: 'triangle' }
   }).connect(filter)
@@ -154,18 +182,30 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
     const freq = Tone.Frequency(note.noteName)
       .transpose(octaveShift)
       .toFrequency()
-    const length = note.duration / part.playbackRate // при быстром темпе ноты короче
+    const length = note.duration / part.playbackRate
     synth.triggerAttackRelease(freq, length, time, note.velocity)
   }, melody)
 
   // длина всей пьесы в долях: 16 + 32 + 16 = 64
   const totalBeats = sections.reduce((sum, s) => sum + s.bars * 4, 0)
 
-  part.loop = true // повторять мелодию
-  part.loopEnd = totalBeats * SEC_PER_BEAT // один круг = вся пьеса целиком
+  part.loop = true
+  part.loopEnd = totalBeats * SEC_PER_BEAT
 
   // сразу учитываем текущее положение ползунка темпа
   part.playbackRate = Number(tempo.value) / BASE_BPM
+
+  // Названия шагов из списка → сколько долей мелодии они занимают
+  const ECHO_STEPS = { '8n': 0.5, '8n.': 0.75, '4n': 1 }
+
+  // Считаем задержку в секундах так же, как считается мелодия:
+  // доли × секунд на долю ÷ скорость воспроизведения.
+  // Так эхо не разъезжается с мелодией, когда двигаешь ползунок темпа.
+  function updateEchoTime() {
+    const beats = ECHO_STEPS[echoTime.value]
+    echo.delayTime.value = (beats * SEC_PER_BEAT) / part.playbackRate
+  }
+  updateEchoTime()
 
   // ---------- Закрашивание дорожки ползунка белым ----------
   function setFill(slider) {
@@ -175,7 +215,7 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
   }
 
   // закрашивание всех ползунков этого голоса сразу при загрузке
-  ;[box, oscBox, filterBox].forEach((block) => {
+  ;[box, oscBox, filterBox, echoBox, reverbBox].forEach((block) => {
     block.querySelectorAll('input[type=range]').forEach((slider) => {
       setFill(slider)
       slider.addEventListener('input', () => setFill(slider))
@@ -184,18 +224,18 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
 
   // ---------- Кнопки ИГРАТЬ / СТОП ----------
   playBtn.addEventListener('click', async () => {
-    await Tone.start() // браузер разрешает звук только после клика
+    await Tone.start()
     if (Tone.Transport.state !== 'started') {
-      Tone.Transport.start() // общие часы Tone.js
+      Tone.Transport.start()
     }
-    part.stop() // на случай, если уже играет — начнём с начала
+    part.stop()
     part.start(Tone.Transport.seconds + 0.1)
     playBtn.classList.add('active')
   })
 
   stopBtn.addEventListener('click', () => {
-    part.stop() // останавливаем ноты
-    synth.triggerRelease() // глушим ноту, которая ещё звучит
+    part.stop()
+    synth.triggerRelease()
     playBtn.classList.remove('active')
   })
 
@@ -203,7 +243,8 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
   tempo.addEventListener('input', () => {
     const bpm = Number(tempo.value)
     box.querySelector('.tempo-value').textContent = bpm + ' bpm'
-    part.playbackRate = bpm / BASE_BPM // 78 bpm = обычная скорость
+    part.playbackRate = bpm / BASE_BPM
+    updateEchoTime()
   })
 
   volume.addEventListener('input', () => {
@@ -213,11 +254,11 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
 
   // ---------- Осциллятор ----------
   wave.addEventListener('change', () => {
-    synth.oscillator.type = wave.value // sine, triangle, square, sawtooth
+    synth.oscillator.type = wave.value
   })
 
   octave.addEventListener('change', () => {
-    octaveShift = Number(octave.value) // применится к следующим нотам
+    octaveShift = Number(octave.value)
   })
 
   detune.addEventListener('input', () => {
@@ -227,7 +268,7 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
 
   // ---------- Фильтр ----------
   filterType.addEventListener('change', () => {
-    filter.type = filterType.value // lowpass, highpass, bandpass
+    filter.type = filterType.value
   })
 
   cutoff.addEventListener('input', () => {
@@ -239,8 +280,52 @@ function createVoice(sectionId, oscId, filterId, voiceScore, sections) {
     filter.Q.value = Number(resonance.value)
     filterBox.querySelector('.resonance-value').textContent = resonance.value
   })
+
+  // ---------- Эхо ----------
+  echoTime.addEventListener('change', updateEchoTime)
+
+  echoWet.addEventListener('input', () => {
+    echo.wet.value = Number(echoWet.value)
+    echoBox.querySelector('.echo-wet-value').textContent =
+      Math.round(echoWet.value * 100) + '%'
+  })
+
+  echoFeedback.addEventListener('input', () => {
+    echo.feedback.value = Number(echoFeedback.value)
+    echoBox.querySelector('.echo-feedback-value').textContent =
+      Math.round(echoFeedback.value * 100) + '%'
+  })
+
+  // ---------- Реверберация ----------
+  reverbWet.addEventListener('input', () => {
+    reverb.wet.value = Number(reverbWet.value)
+    reverbBox.querySelector('.reverb-wet-value').textContent =
+      Math.round(reverbWet.value * 100) + '%'
+  })
+
+  reverbDecay.addEventListener('input', () => {
+    reverb.decay = Number(reverbDecay.value) // зал «перестраивается» заново
+    reverbBox.querySelector('.reverb-decay-value').textContent =
+      reverbDecay.value + ' с'
+  })
 }
 
 // сборка обоих голосов
-createVoice('max', 'osc-max', 'filter-max', SCORE.melodyMax, SECTIONS)
-createVoice('chloe', 'osc-chloe', 'filter-chloe', SCORE.melodyChloe, SECTIONS)
+createVoice(
+  'max',
+  'osc-max',
+  'filter-max',
+  'fx-echo-max',
+  'fx-reverb-max',
+  SCORE.melodyMax,
+  SECTIONS
+)
+createVoice(
+  'chloe',
+  'osc-chloe',
+  'filter-chloe',
+  'fx-echo-chloe',
+  'fx-reverb-chloe',
+  SCORE.melodyChloe,
+  SECTIONS
+)
